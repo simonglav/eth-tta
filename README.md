@@ -1,7 +1,7 @@
-###Etherium Total Transactions Amount
-##To run:
+### Etherium Total Transactions Amount
+## To run:
     go build -v ./cmd/apiserver
     ./apiserver
 
-##To test:
+## To test:
     go test -v -timeout 30s ./...
