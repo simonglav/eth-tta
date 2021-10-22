@@ -19,7 +19,7 @@ func serve(ctx context.Context) (err error) {
 	rtr.HandleFunc("/api/block/{block_number:[0-9]+}/total", handlers.ETHBlockTotal).Methods("GET")
 
 	srv := &http.Server{
-		Addr:    ":8083",
+		Addr:    ":8080",
 		Handler: rtr,
 	}
 
