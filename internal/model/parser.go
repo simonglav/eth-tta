@@ -11,7 +11,7 @@ import (
 	"github.com/pelletier/go-toml"
 )
 
-// Dafault JSON in case if any error ocurre
+// Dafault JSON in case if any error ocurrs
 var EmptyJSON []byte = []byte(`{"transactions":0,"amount":0}`)
 
 // Raw ETH block data

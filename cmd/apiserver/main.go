@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -12,60 +12,39 @@ import (
 	"github.com/total-transactions-amount-eth/internal/handlers"
 )
 
-func serve(ctx context.Context) (err error) {
-
+func main() {
 	rtr := mux.NewRouter()
 	http.Handle("/", rtr)
 	rtr.HandleFunc("/api/block/{block_number:[0-9]+}/total", handlers.ETHBlockTotal).Methods("GET")
 
-	srv := &http.Server{
+	server := http.Server{
 		Addr:    ":8080",
 		Handler: rtr,
 	}
 
-	go func() {
-		if err = srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("listen:%+s\n", err)
-		}
-	}()
+	// Create context that listens for the interrupt signal from the OS.
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
 
-	log.Println("Server started")
+	server = http.Server{
+		Addr: ":8080",
+	}
 
+	// Listen on a different Goroutine so the application doesn't stop here.
+	go server.ListenAndServe()
+
+	// Listen for the interrupt signal.
 	<-ctx.Done()
 
-	log.Println("Server stopped")
+	// Restore default behavior on the interrupt signal and notify user of shutdown.
+	stop()
+	fmt.Println("Shutting down gracefully, press Ctrl+C again to force")
 
-	ctxShutDown, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer func() {
-		cancel()
-	}()
+	// Perform application shutdown with a maximum timeout of 5 seconds.
+	timeoutCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 
-	if err = srv.Shutdown(ctxShutDown); err != nil {
-		log.Fatalf("Server Shutdown Failed:%+s", err)
-	}
-
-	log.Println("Server exited properly")
-
-	if err == http.ErrServerClosed {
-		err = nil
-	}
-	return
-}
-
-func main() {
-
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-
-	ctx, cancel := context.WithCancel(context.Background())
-
-	go func() {
-		oscall := <-c
-		log.Printf("System call:%+v\n", oscall)
-		cancel()
-	}()
-
-	if err := serve(ctx); err != nil {
-		log.Printf("Failed to serve:+%v\n", err)
+	if err := server.Shutdown(timeoutCtx); err != nil {
+		fmt.Println(err)
 	}
 }
