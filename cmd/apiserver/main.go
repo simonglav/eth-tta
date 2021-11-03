@@ -22,7 +22,7 @@ func main() {
 		Handler: rtr,
 	}
 
-	// Create context that listens for the interrupt signal from the OS.
+	// Create context that listens for the interrupt signal from the OS
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
 
@@ -30,17 +30,17 @@ func main() {
 		Addr: ":8080",
 	}
 
-	// Listen on a different Goroutine so the application doesn't stop here.
+	// Listen on a different Goroutine so the application doesn't stop here
 	go server.ListenAndServe()
 
-	// Listen for the interrupt signal.
+	// Listen for the interrupt signal
 	<-ctx.Done()
 
-	// Restore default behavior on the interrupt signal and notify user of shutdown.
+	// Restore default behavior on the interrupt signal and notify user of shutdown
 	stop()
 	fmt.Println("Shutting down gracefully, press Ctrl+C again to force")
 
-	// Perform application shutdown with a maximum timeout of 5 seconds.
+	// Perform application shutdown with a maximum timeout of 5 seconds
 	timeoutCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

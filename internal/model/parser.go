@@ -4,15 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"io/ioutil"
-	"log"
+	"math/big"
 	"net/http"
-	"strconv"
-
-	"github.com/pelletier/go-toml"
 )
-
-// Dafault JSON in case if any error ocurrs
-var EmptyJSON []byte = []byte(`{"transactions":0,"amount":0}`)
 
 // Raw ETH block data
 type block struct {
@@ -23,53 +17,49 @@ type block struct {
 	}
 }
 
-// GetTotalAmount returns JSON []byte of transactions number and a sum of the values;
-// {"transactions": int,"amount":float64};
-// If error occurs returns EmptyJSON and error
-func GetTotalAmount(block_number int) ([]byte, error) {
-	hexBlock := "0x" + strconv.FormatInt(int64(block_number), 16)
+// Total Transactions Amount
+type TotTransAm struct {
+	Transactions int     `json:"transactions"`
+	Amount       float64 `json:"amount"`
+}
 
-	resp, err := http.Get(buildURL(hexBlock))
+// GetBlockTTA is computing number of transactions for ETH block and total transactions amount in Ethers
+func (tta *TotTransAm) GetBlockTTA(block_number int) error {
+	resp, err := http.Get(BuildURL(block_number))
 	if err != nil {
-		return EmptyJSON, err
+		return err
 	}
-
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return EmptyJSON, err
+		return err
 	}
 
 	var blc block
 	if err := json.Unmarshal(body, &blc); err != nil {
-		return EmptyJSON, err
+		return err
 	}
 
 	if blc.Result.Transactions == nil {
-		return EmptyJSON, errors.New("invalid ETH block number")
+		return errors.New("invalid ETH block number")
 	}
 
-	var result tta
-	result.calculate(&blc)
+	tta.calculate(&blc)
+	return nil
 
-	Jresult, err := json.Marshal(result)
-	if err != nil {
-		return EmptyJSON, err
-	}
-	return Jresult, nil
 }
 
-// buildURL is building API's URL with hexBlock as ETH block number(0x format) and with API token from 'token.toml'
-func buildURL(hexBlock string) string {
-	APIKey := "YourApiKeyToken" // default token
-
-	config, err := toml.LoadFile("token.toml")
-	if err != nil {
-		log.Println(err)
-	} else {
-		APIKey = config.Get("EtherScanAPIKey").(string)
+// calcualte is calculating total transactions number and a sum of the value of each transaction;
+// *Amount is in Ether denomination
+func (result *TotTransAm) calculate(blc *block) {
+	totalAmount := new(big.Int)
+	for _, trans := range blc.Result.Transactions {
+		decimal := new(big.Int)
+		decimal.SetString(trans.Value[2:], 16) // cut 0x and convert to decimal
+		totalAmount.Add(totalAmount, decimal)
 	}
 
-	return "https://api.etherscan.io/api?module=proxy&action=eth_getBlockByNumber&tag=" + hexBlock + "&boolean=true&apikey=" + APIKey
+	result.Transactions = len(blc.Result.Transactions)
+	result.Amount = WeiToEther(totalAmount)
 }
