@@ -1,10 +1,10 @@
 ### Etherium Total Transactions Amount
 HTTP service providing sum of transaction amounts for a given ETH (Ethereum) block number.
-etherscan.io is a data source
+(etherscan.io is a data source)
 
 #### Request:
     The service provides single HTTP endpoint:
-    GET /api/block/<block_number>/total
+        GET /api/block/<block_number>/total
     where <block_number> is a requested block number in decimal format.
 
     Request example: /api/block/11508993/total
