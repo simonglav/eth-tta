@@ -4,7 +4,7 @@ HTTP service providing sum of transaction amounts for a given ETH (Ethereum) blo
 
 #### Request:
     The service provides single HTTP endpoint:
-        **GET /api/block/<block_number>/total**
+        _GET /api/block/<block_number>/total_
     where <block_number> is a requested block number in decimal format.
 
     Request example: /api/block/11509797/total
