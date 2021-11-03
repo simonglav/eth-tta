@@ -2,12 +2,12 @@
 HTTP service providing sum of transaction amounts for a given ETH (Ethereum) block number.
 etherscan.io is a data source
 
-##Request:
+## Request:
     The service provides single HTTP endpoint:
     GET /api/block/<block_number>/total
     where <block_number> is a requested block number in decimal format.
     Request example: /api/block/11508993/total
-##Response:
+## Response:
     The response is returned as a JSON document with two fields:
     * “transactions” - total count of transactions in the block
     * “amount” - total amount of transaction values (in Ether)
