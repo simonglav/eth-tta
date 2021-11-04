@@ -17,17 +17,17 @@ import (
 // Number of transactions for ETH block with given block_number and total transactions amount in Ethers
 func ETHBlockTotal(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	block_number := params["block_number"]
+	blockNumber := params["block_number"]
 	w.Header().Set("Content-Type", "application/json")
 
-	cachedTotalAmount, err := store.GetCache(block_number)
+	cachedTotalAmount, err := store.GetCache(blockNumber)
 	if err == nil {
 		w.WriteHeader(http.StatusCreated)
 		w.Write(cachedTotalAmount)
 		return
 	}
 
-	block, err := strconv.Atoi(block_number)
+	block, err := strconv.Atoi(blockNumber)
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusBadRequest)
@@ -49,7 +49,7 @@ func ETHBlockTotal(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	store.SetCache(block_number, jTotalAmount)
+	store.SetCache(blockNumber, jTotalAmount)
 	w.WriteHeader(http.StatusCreated)
 	w.Write(jTotalAmount)
 }
