@@ -15,9 +15,3 @@ HTTP service providing sum of transaction amounts for a given ETH (Ethereum) blo
 
     Response body example:
     {"transactions":155,"amount":2.285404805647828}
-## To run:
-    go build -v ./cmd/apiserver
-    ./apiserver
-
-## To test:
-    go test -v -timeout 30s ./...
