@@ -4,7 +4,7 @@ import (
 	"math/big"
 	"strconv"
 
-	"github.com/total-transactions-amount-eth/config"
+	"github.com/simonglav/total-transactions-amount-eth/config"
 )
 
 // WeiToEther is a Etherium denomination converter, from Wei to Ether

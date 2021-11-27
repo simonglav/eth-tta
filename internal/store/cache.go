@@ -4,7 +4,8 @@ import (
 	"log"
 
 	"github.com/go-redis/redis"
-	"github.com/total-transactions-amount-eth/config"
+
+	"github.com/simonglav/total-transactions-amount-eth/config"
 )
 
 var client = redis.NewClient(&redis.Options{

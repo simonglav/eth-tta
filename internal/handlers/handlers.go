@@ -7,8 +7,9 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/total-transactions-amount-eth/internal/model"
-	"github.com/total-transactions-amount-eth/internal/store"
+
+	"github.com/simonglav/total-transactions-amount-eth/internal/model"
+	"github.com/simonglav/total-transactions-amount-eth/internal/store"
 )
 
 // ETHBlockTotal handles "/api/block/{block_number:[0-9]+}/total" GET request;

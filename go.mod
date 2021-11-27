@@ -1,4 +1,4 @@
-module github.com/total-transactions-amount-eth
+module github.com/simonglav/total-transactions-amount-eth
 
 go 1.17
 
@@ -9,6 +9,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/stretchr/testify v1.7.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+	github.com/go-redis/redis v6.15.9+incompatible // indirect
 )
 
-require github.com/go-redis/redis v6.15.9+incompatible // indirect

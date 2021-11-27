@@ -9,8 +9,9 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/total-transactions-amount-eth/config"
-	"github.com/total-transactions-amount-eth/internal/handlers"
+
+	"github.com/simonglav/total-transactions-amount-eth/config"
+	"github.com/simonglav/total-transactions-amount-eth/internal/handlers"
 )
 
 func main() {
