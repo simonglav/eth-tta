@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  redis:
+    container_name: "redis"
+    image: redis:5.0.8
+    ports:
+      - "6379:6379"
+  go:
+    container_name: "tta-eth"
+    build:
+      context: .
+    ports:
+      - "8080:8080"

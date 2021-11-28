@@ -1,4 +1,4 @@
-### Etherium Total Transactions Amount
+### Ethereum Total Transactions Amount
 HTTP service providing sum of transaction amounts for a given ETH (Ethereum) block number.  
 [Etherscan](https://etherscan.io/) is a data source.
 
@@ -15,3 +15,6 @@ HTTP service providing sum of transaction amounts for a given ETH (Ethereum) blo
 
     Response body example:
     {"transactions":155,"amount":2.285404805647828}
+
+#### To run:
+    docker-compose up

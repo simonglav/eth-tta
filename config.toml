@@ -1,6 +1,6 @@
 EtherScanAPIKey = "YourApiKeyToken"
-ServerAddr = "localhost:8080"
+ServerAddr = ":8080"
 
-RedisAddr = "localhost:6379"
+RedisAddr = "redis:6379"
 RedisPassword = ""
 RedisDB = 0
