@@ -8,6 +8,7 @@ services:
       - "6379:6379"
   go:
     container_name: "tta-eth"
+    image: go-rest
     build:
       context: .
     ports:
